@@ -1,15 +1,20 @@
-version: "3.8"
+version: '3.8'
 
 services:
   jenkins:
-    build: .
-    container_name: mi-jenkins
-    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins-server
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    user: root
+    restart: unless-stopped
 
 volumes:
-  jenkins_home:
+  jenkins_data:
